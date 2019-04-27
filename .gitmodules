@@ -1,0 +1,9 @@
+[submodule "api"]
+	path = api
+	url = https://github.com/bostrick/crowdpong-api.git
+[submodule "board-client"]
+	path = board-client
+	url = https://github.com/bostrick/crowdpong-board-client.git
+[submodule "controller-client"]
+	path = controller-client
+	url = https://github.com/bostrick/crowdpong-controller-client.git
