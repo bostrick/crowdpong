@@ -158,7 +158,7 @@ We have some issues:
     - storage: if i kill the redis container, i lose the data!
 
 
-Manage groups of containers locally: Docker Compose
+Docker Compose: Manage groups of containers locally
 =======================================================
 
 - Define networks, storage, settings, sources, ... in a
@@ -175,11 +175,81 @@ Manage groups of containers locally: Docker Compose
 
 - easy to map storage to local volumes
 
-- manage with **docker-compose** command (context directory dependent)
+- Compose file for my project thus far::
 
-    ::
-        docker-compose pull
-        docker-compose up
-        docker-compose ps
-        docker-compose exec webapp /bin/bash
+    version: '3'
+    services:
+    
+      api:
+        image: docker-registry-default.apps.os-gamma.ole.redhat.com/crowdpong/crowdpong-api:latest
+        environment:
+          xCONTAINER_DEBUG: 1
+        ports:
+          - "8080:8080"
+        volumes:
+          - ./api:/opt/app-root/src
+    
+      redis:
+        image: redis
+        ports: 
+          - "6379:6379"
+        volumes:
+          - redis:/var/lib/redis/data
+    
+    volumes:
+      redis:
+    
+- manage with **docker-compose** command (context directory dependent)::
+
+    docker-compose pull
+    docker-compose up
+    docker-compose ps
+    docker-compose exec webapp /bin/bash
+    docker-compose down
+
+- Compare to underlying docker management::
+
+    docker ps
+    docker volume ls
+
+******************************************
+The SPA Projects
+******************************************
+
+Manual Installation: conventional layout
+=============================================
+
+- Check out the Repo::
+
+    git clone https://github.com/bostrick/crowdpong-board-client
+    cd crowdpoint-board-client
+
+- Install node modules::
+
+    npm install
+
+- Build or Develop::
+
+    npm run build
+    npm run dev
+
+How Containerize?
+==============================
+   
+    - Openshift console!
+
+    - Openshift command line! ::
+
+        oc login ...
+        oc project crowdpong
+        oc new-app https://github.com/bostrick/crowdpong-board-client
+
+Helpful to have overriding project
+=========================================
+
+  - git clone --recursive https://github.com/bostrick/crowdpong
+
+  - cd crowdpong
+
+  - docker-compose up -d
 
